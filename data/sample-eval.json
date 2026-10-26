@@ -1,0 +1,189 @@
+[
+ {
+  "query": "שואב אבק",
+  "expect": [
+   "s5",
+   "s6",
+   "s7"
+  ]
+ },
+ {
+  "query": "vacuum cleaner",
+  "expect": [
+   "s5",
+   "s6",
+   "s7"
+  ]
+ },
+ {
+  "query": "robot vacuum",
+  "expect": [
+   "s5"
+  ]
+ },
+ {
+  "query": "iPhone 16",
+  "expect": [
+   "s1"
+  ]
+ },
+ {
+  "query": "אייפון",
+  "expect": [
+   "s1",
+   "s2"
+  ]
+ },
+ {
+  "query": "אייפון 16",
+  "expect": [
+   "s1"
+  ]
+ },
+ {
+  "query": "מתנה למישהו שאוהב לבשל",
+  "expect": [
+   "s8",
+   "s9",
+   "s10",
+   "s11",
+   "s12",
+   "s25"
+  ]
+ },
+ {
+  "query": "gift for someone who loves cooking",
+  "expect": [
+   "s8",
+   "s9",
+   "s10",
+   "s11",
+   "s12",
+   "s25"
+  ]
+ },
+ {
+  "query": "משהו שיעזור לנקות שערות של כלב מהספה",
+  "expect": [
+   "s13",
+   "s14"
+  ]
+ },
+ {
+  "query": "remove dog hair from couch",
+  "expect": [
+   "s13",
+   "s14"
+  ]
+ },
+ {
+  "query": "headphones",
+  "expect": [
+   "s16"
+  ]
+ },
+ {
+  "query": "אוזניות",
+  "expect": [
+   "s16"
+  ]
+ },
+ {
+  "query": "speaker",
+  "expect": [
+   "s17"
+  ]
+ },
+ {
+  "query": "coffee machine",
+  "expect": [
+   "s18"
+  ]
+ },
+ {
+  "query": "מכונת קפה",
+  "expect": [
+   "s18"
+  ]
+ },
+ {
+  "query": "טלפון של סמסונג",
+  "expect": [
+   "s3"
+  ]
+ },
+ {
+  "query": "phone charger",
+  "expect": [
+   "s24"
+  ]
+ },
+ {
+  "query": "טלוויזיה",
+  "expect": [
+   "s19"
+  ]
+ },
+ {
+  "query": "running shoes",
+  "expect": [
+   "s23"
+  ]
+ },
+ {
+  "query": "צעצוע לילד שאוהב מכוניות",
+  "expect": [
+   "s22"
+  ]
+ },
+ {
+  "query": "something to fry without oil",
+  "expect": [
+   "s25"
+  ]
+ },
+ {
+  "query": "iron for clothes",
+  "expect": [
+   "s20"
+  ]
+ },
+ {
+  "query": "כרית לשינה",
+  "expect": [
+   "s21"
+  ]
+ },
+ {
+  "query": "dyson",
+  "expect": [
+   "s6"
+  ]
+ },
+ {
+  "query": "רובורוק",
+  "expect": [
+   "s5"
+  ]
+ },
+ {
+  "query": "מכונת כביסה",
+  "expect": []
+ },
+ {
+  "query": "asdfgh",
+  "expect": []
+ },
+ {
+  "query": "גיטרה חשמלית",
+  "expect": []
+ },
+ {
+  "query": "car tires",
+  "expect": []
+ },
+ {
+  "query": "תרופה לכאב ראש",
+  "expect": []
+ }
+]

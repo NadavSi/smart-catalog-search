@@ -1,0 +1,8 @@
+id,name,description,category,price,image_url
+1,"Apple iPhone 16 128GB שחור","סמארטפון אפל עם מצלמה כפולה ושבב A18",סלולר,"3,799.00",https://example.com/iphone16.jpg
+2,"שואב אבק רובוטי Roborock S8","שואב ושוטף עם מיפוי לייזר",מוצרי חשמל לבית,2490,https://example.com/roborock.jpg
+3,"סיר לחץ חשמלי 6 ליטר","מבשל אורז, תבשילים ומרקים בלחיצת כפתור",מטבח,"₪ 449.90",
+4,"מברשת להסרת שיער חיות מחמד","מסירה שערות של כלבים וחתולים מספות ובגדים",חיות מחמד,59.9,https://example.com/pet-brush.jpg
+5,"Sony WH-1000XM5 Headphones","Wireless noise cancelling headphones",אודיו,1490,not-a-url
+6,"",בלי שם,כללי,10,
+7,"מוצר ללא מחיר",,כללי,,

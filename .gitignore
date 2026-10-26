@@ -1,0 +1,4 @@
+.env
+/src/storage/models/
+.DS_Store
+.claude/settings.local.json

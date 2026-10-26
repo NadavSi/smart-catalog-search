@@ -1,0 +1,9 @@
+.git
+.env
+data
+src/vendor
+src/storage/models
+src/storage/logs/*
+src/storage/framework/cache/data/*
+src/storage/framework/views/*
+src/.env
