@@ -5,9 +5,11 @@ namespace Tests\Feature;
 use App\Catalog\CatalogImporter;
 use App\Catalog\CsvCatalogReader;
 use App\Contracts\Embedder;
+use App\Contracts\Reranker;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Support\FakeEmbedder;
+use Tests\Support\FakeReranker;
 use Tests\TestCase;
 
 /** Runs the real hybrid SQL against Postgres + pgvector, with a fake embedding model. */
@@ -29,13 +31,13 @@ class SearchApiTest extends TestCase
 
     public function test_import_is_idempotent(): void
     {
-        $this->assertSame(5, Product::count());
+        $this->assertSame(6, Product::count());
 
         $this->app->make(CatalogImporter::class)->import(
             $this->app->make(CsvCatalogReader::class)->read(base_path('tests/Fixtures/products.csv'))
         );
 
-        $this->assertSame(5, Product::count());
+        $this->assertSame(6, Product::count());
     }
 
     public function test_finds_product_by_name(): void
@@ -81,6 +83,36 @@ class SearchApiTest extends TestCase
 
         $this->assertArrayNotHasKey('embedding', $product);
         $this->assertArrayNotHasKey('search_text', $product);
+    }
+
+    public function test_reranker_is_not_called_when_disabled(): void
+    {
+        $this->app->instance(Reranker::class, $reranker = new FakeReranker);
+
+        $this->getJson('/api/search?q=iphone 16')->assertOk();
+
+        $this->assertSame([], $reranker->calls);
+    }
+
+    public function test_reranker_decides_order_and_relevance(): void
+    {
+        $this->app->instance(Reranker::class, $reranker = new FakeReranker);
+        config(['catalog.search.rerank' => true, 'catalog.search.rerank_min' => 0.0]);
+
+        $results = $this->getJson('/api/search?q='.urlencode('שואב אבק רובוטי'))->assertOk()->json('data');
+
+        // Only the Roborock shares a word with the query, so it is the only one kept.
+        $this->assertSame(['שואב אבק רובוטי Roborock S8'], array_column($results, 'name'));
+        $this->assertGreaterThan(0.5, $results[0]['score'], 'score is the sigmoid of the logit');
+        $this->assertLessThanOrEqual(config('catalog.search.rerank_top'), count($reranker->calls[0][1]));
+    }
+
+    public function test_reranker_can_empty_the_results(): void
+    {
+        $this->app->instance(Reranker::class, new FakeReranker);
+        config(['catalog.search.rerank' => true, 'catalog.search.rerank_min' => 5.0]);
+
+        $this->getJson('/api/search?q=iphone')->assertOk()->assertJsonCount(0, 'data');
     }
 
     public function test_search_page_renders_rtl(): void

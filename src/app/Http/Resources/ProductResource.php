@@ -13,7 +13,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => (float) $this->price,
+            'price' => $this->price === null ? null : (float) $this->price,
             'image_url' => $this->image_url,
             'category' => $this->category,
             'brand' => $this->brand,

@@ -11,6 +11,8 @@ const form = document.querySelector('[data-search-form]');
 const input = document.querySelector('[data-search-input]');
 const grid = document.querySelector('[data-results]');
 const summary = document.querySelector('[data-summary]');
+const resultsHeader = document.querySelector('[data-results-header]');
+const clearButton = document.querySelector('[data-search-clear]');
 const stateMessages = document.querySelectorAll('[data-state]');
 
 let controller = null;
@@ -25,6 +27,11 @@ function showState(state, text) {
     grid.setAttribute('aria-busy', String(state === 'loading'));
     if (state !== 'results' && state !== 'loading') grid.replaceChildren();
     if (state !== 'results') summary.textContent = '';
+    resultsHeader.hidden = state !== 'results';
+}
+
+function syncClearButton() {
+    clearButton.hidden = input.value === '';
 }
 
 async function runSearch(query, { updateUrl = true } = {}) {
@@ -69,6 +76,7 @@ form.addEventListener('submit', (event) => {
 });
 
 input.addEventListener('input', () => {
+    syncClearButton();
     clearTimeout(debounceTimer);
     const value = input.value.trim();
     if (value.length === 0) return runSearch('');
@@ -77,11 +85,26 @@ input.addEventListener('input', () => {
 
 form.querySelectorAll('[data-example]').forEach((chip) => chip.addEventListener('click', () => {
     input.value = chip.dataset.example;
+    syncClearButton();
     runSearch(input.value);
 }));
+
+clearButton.addEventListener('click', () => {
+    input.value = '';
+    syncClearButton();
+    runSearch('');
+    input.focus();
+});
+
+document.querySelector('[data-focus-search]')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    input.focus();
+    input.scrollIntoView({ block: 'center', behavior: 'smooth' });
+});
 
 document.querySelector('[data-state-action="error"]')?.addEventListener('click', () => runSearch(input.value));
 
 const initial = new URLSearchParams(location.search).get('q') ?? '';
 input.value = initial;
+syncClearButton();
 initial ? runSearch(initial, { updateUrl: false }) : showState('idle');

@@ -19,13 +19,14 @@ class CsvCatalogReaderTest extends TestCase
         $reader = $this->reader();
         $products = iterator_to_array($reader->read(__DIR__.'/../Fixtures/products.csv'), false);
 
-        $this->assertCount(5, $products);
+        $this->assertCount(6, $products);
         $this->assertSame('Apple iPhone 16 128GB שחור', $products[0]->name);
         $this->assertSame(3799.0, $products[0]->price);
         $this->assertSame(449.9, $products[2]->price);
         $this->assertNull($products[2]->imageUrl, 'empty image stays null');
         $this->assertNull($products[4]->imageUrl, 'invalid URL is dropped');
-        $this->assertSame([7 => 'empty name', 8 => 'invalid price ""'], $reader->skipped());
+        $this->assertNull($products[5]->price, 'a missing price is allowed');
+        $this->assertSame([7 => 'empty name', 9 => 'invalid price "חינם"'], $reader->skipped());
     }
 
     public function test_matches_headers_by_alias_and_keeps_unknown_columns(): void
@@ -45,10 +46,10 @@ class CsvCatalogReaderTest extends TestCase
     public function test_rejects_csv_without_required_columns(): void
     {
         $path = tempnam(sys_get_temp_dir(), 'csv');
-        file_put_contents($path, "title,colour\nchair,red\n");
+        file_put_contents($path, "colour,size\nred,L\n");
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('price');
+        $this->expectExceptionMessage('name');
         try {
             iterator_to_array($this->reader()->read($path));
         } finally {

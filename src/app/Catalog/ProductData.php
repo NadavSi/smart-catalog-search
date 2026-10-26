@@ -12,7 +12,7 @@ final readonly class ProductData
     public function __construct(
         public string $externalId,
         public string $name,
-        public float $price,
+        public ?float $price = null,
         public ?string $description = null,
         public ?string $category = null,
         public ?string $brand = null,

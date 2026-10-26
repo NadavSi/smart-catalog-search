@@ -1,19 +1,22 @@
 <x-layouts.app>
-    <header class="hero">
-        <h1 class="hero__title">מוצאים בדיוק מה שצריך</h1>
-        <p class="hero__subtitle">חפשו לפי שם מוצר, או פשוט תארו מה אתם צריכים, בעברית או באנגלית.</p>
+    <section class="hero">
+        <h1 class="hero__title">מה בא לכם למצוא?</h1>
+        <p class="hero__subtitle">תארו מה אתם מחפשים, אנחנו נמצא מוצרים מתאימים</p>
 
         <x-search-box :examples="[
-            'שואב אבק',
-            'iPhone 16',
-            'אייפון',
-            'מתנה למישהו שאוהב לבשל',
+            'מתנה למישהו שאוהב קפה',
+            'שואב אבק רובוטי',
+            'Dyson',
+            'אוזניות עם ביטול רעשים',
             'משהו שיעזור לנקות שערות של כלב מהספה',
         ]" />
-    </header>
+    </section>
 
-    <section class="results" aria-labelledby="results-summary">
-        <p id="results-summary" class="results__summary" aria-live="polite" data-summary></p>
+    <section class="results" aria-labelledby="results-title">
+        <div class="results__header" data-results-header hidden>
+            <h2 id="results-title" class="results__title">מצאנו מוצרים בשבילכם</h2>
+            <p class="results__summary" aria-live="polite" data-summary></p>
+        </div>
 
         <div class="results__grid" data-results aria-busy="false"></div>
 

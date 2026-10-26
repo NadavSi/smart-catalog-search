@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Catalog\CsvCatalogReader;
 use App\Contracts\Embedder;
+use App\Contracts\Reranker;
 use App\Search\ProductSearch;
 use App\Search\QueryExpander;
 use App\Services\Embeddings\TransformersEmbedder;
+use App\Services\Reranking\TransformersReranker;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -26,10 +28,19 @@ class AppServiceProvider extends ServiceProvider
             batchSize: config('catalog.embeddings.batch_size'),
         ));
 
+        // Lazy like the embedder: nothing is loaded unless search.rerank is on.
+        $this->app->singleton(Reranker::class, fn () => new TransformersReranker(
+            modelName: config('catalog.reranker.model'),
+            cacheDir: config('catalog.reranker.cache_dir'),
+            maxLength: config('catalog.reranker.max_length'),
+            batchSize: config('catalog.reranker.batch_size'),
+        ));
+
         $this->app->bind(ProductSearch::class, fn ($app) => new ProductSearch(
             $app->make(Embedder::class),
             new QueryExpander(config('catalog.synonyms')),
             config('catalog.search'),
+            $app->make(Reranker::class),
         ));
 
         $this->app->bind(CsvCatalogReader::class, fn () => new CsvCatalogReader(

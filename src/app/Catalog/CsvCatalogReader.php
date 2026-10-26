@@ -22,7 +22,7 @@ class CsvCatalogReader
      */
     public function __construct(
         private readonly array $columns,
-        private readonly array $required = ['name', 'price'],
+        private readonly array $required = ['name'],
     ) {}
 
     /** @return Generator<int, ProductData> */
@@ -97,7 +97,8 @@ class CsvCatalogReader
             : null;
 
         $name = $get('name') ?? throw new InvalidArgumentException('empty name');
-        $price = self::parsePrice($get('price'));
+        // Price is optional (some catalogs have none), but a value that is there must parse.
+        $price = ($raw = $get('price')) === null ? null : self::parsePrice($raw);
 
         $extra = [];
         foreach ($map['extra'] as $i => $header) {

@@ -23,7 +23,7 @@ return [
             'price' => ['price', 'cost', 'מחיר'],
             'image_url' => ['image', 'image_url', 'img', 'picture', 'thumbnail', 'תמונה'],
         ],
-        'required' => ['name', 'price'],
+        'required' => ['name'],
     ],
 
     /*
@@ -78,6 +78,32 @@ return [
         'min_lexical' => 0.6,
         'max_gap' => 0.10,
         'max_query_length' => 200,
+
+        // Cross-encoder re-ranking of the top `rerank_top` hybrid candidates
+        // (see `reranker` below). Off by default: ~0.7s per candidate on this
+        // CPU, ~7s per search. rerank_min is a logit; -4 was the best trade-off
+        // on data/eval.json (false positives 10/10 → 4/10 for 3 missed queries).
+        'rerank' => (bool) env('SEARCH_RERANK', false),
+        'rerank_top' => 10,
+        'rerank_min' => -4.0,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Re-ranker
+    |--------------------------------------------------------------------------
+    |
+    | bge-reranker-v2-m3: multilingual (same base as bge-m3), Apache-2.0.
+    | Smaller cross-encoders were tried and rejected (README): mMiniLM is
+    | fast but cannot tell "vacuum cleaner" from a vacuum storage bag.
+    |
+    */
+
+    'reranker' => [
+        'model' => env('RERANK_MODEL', 'onnx-community/bge-reranker-v2-m3-ONNX'),
+        'cache_dir' => storage_path('models'),
+        'max_length' => 192,
+        'batch_size' => 8,
     ],
 
     /*

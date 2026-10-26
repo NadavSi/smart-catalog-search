@@ -3,6 +3,7 @@
 namespace App\Search;
 
 use App\Contracts\Embedder;
+use App\Contracts\Reranker;
 use App\Models\Product;
 use App\Support\TextNormalizer;
 use Illuminate\Support\Collection;
@@ -23,6 +24,10 @@ use Pgvector\Laravel\Vector;
  * from the catalog as a whole. Its similarity minus the query's mean
  * similarity to all products must reach min_margin. With unit vectors that
  * mean is just the dot product with the catalog centroid.
+ *
+ * Optional last stage (search.rerank): a cross-encoder re-scores the top
+ * rerank_top candidates, reading query and product together, and its score
+ * decides both the order and what is relevant enough to show.
  */
 class ProductSearch
 {
@@ -30,9 +35,10 @@ class ProductSearch
         private readonly Embedder $embedder,
         private readonly QueryExpander $expander,
         private readonly array $config,
+        private readonly ?Reranker $reranker = null,
     ) {}
 
-    /** @return Collection<int, Product> each with `score`, `semantic`, `margin` and `lexical` attributes */
+    /** @return Collection<int, Product> each with `score`, `semantic`, `margin` and `lexical` attributes (and `rerank` when enabled) */
     public function search(string $query): Collection
     {
         $text = TextNormalizer::normalize($query);
@@ -76,10 +82,39 @@ class ProductSearch
             ->sortByDesc('score')
             ->values();
 
+        if ($this->reranker && $c['rerank']) {
+            return $this->rerank(implode(' / ', $variants), $relevant);
+        }
+
         $best = $relevant->first()?->score;
 
         return $relevant
             ->filter(fn ($p) => $p->score >= $best - $c['max_gap'])
+            ->take($c['limit'])
+            ->values();
+    }
+
+    /**
+     * @param  Collection<int, Product>  $candidates  sorted by the hybrid score
+     * @return Collection<int, Product>
+     */
+    private function rerank(string $query, Collection $candidates): Collection
+    {
+        $c = $this->config;
+        $candidates = $candidates->take($c['rerank_top'])->values();
+        if ($candidates->isEmpty()) {
+            return $candidates;
+        }
+
+        $scores = $this->reranker->score($query, $candidates->map->rerankText()->all());
+        foreach ($candidates as $i => $product) {
+            $product->rerank = $scores[$i];
+            $product->score = 1 / (1 + exp(-$scores[$i])); // logit → 0..1 for the API
+        }
+
+        return $candidates
+            ->filter(fn ($p) => $p->rerank >= $c['rerank_min'])
+            ->sortByDesc('rerank')
             ->take($c['limit'])
             ->values();
     }

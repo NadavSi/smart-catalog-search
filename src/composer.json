@@ -28,7 +28,13 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [
+            "overrides/CharTrie.php"
+        ],
+        "exclude-from-classmap": [
+            "vendor/codewithkyrian/transformers/src/DataStructures/CharTrie.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

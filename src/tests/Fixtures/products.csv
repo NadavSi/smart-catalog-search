@@ -5,4 +5,5 @@ id,name,description,category,price,image_url
 4,"מברשת להסרת שיער חיות מחמד","מסירה שערות של כלבים וחתולים מספות ובגדים",חיות מחמד,59.9,https://example.com/pet-brush.jpg
 5,"Sony WH-1000XM5 Headphones","Wireless noise cancelling headphones",אודיו,1490,not-a-url
 6,"",בלי שם,כללי,10,
-7,"מוצר ללא מחיר",,כללי,,
+7,"כרית ישיבה ארגונומית","קטלוג בלי מחירים",ריהוט,,
+8,"מוצר עם מחיר שגוי",,כללי,חינם,

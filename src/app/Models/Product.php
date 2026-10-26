@@ -14,6 +14,12 @@ class Product extends Model
 
     protected $hidden = ['embedding', 'search_text'];
 
+    /** What the re-ranker reads for this product; same fields as the embedding text. */
+    public function rerankText(): string
+    {
+        return implode('. ', array_filter([$this->name, $this->brand, $this->category, $this->description]));
+    }
+
     protected function casts(): array
     {
         return [
