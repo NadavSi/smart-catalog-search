@@ -2,7 +2,7 @@
 
 const priceFormat = new Intl.NumberFormat('he-IL', { style: 'currency', currency: 'ILS', maximumFractionDigits: 2, minimumFractionDigits: 0 });
 
-const PLACEHOLDER_IMAGE = 'data:image/svg+xml,' + encodeURIComponent(
+export const PLACEHOLDER_IMAGE = 'data:image/svg+xml,' + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3"><rect width="4" height="3" fill="#eef0f3"/></svg>'
 );
 

@@ -35,6 +35,7 @@
     </section>
 
     <x-product-card />
+    <x-product-dialog />
 
     <x-slot:scripts>
         <script type="module" src="js/search-page.js"></script>

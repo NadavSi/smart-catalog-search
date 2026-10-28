@@ -5,7 +5,8 @@
             <img class="product-card__image" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-field="image">
         </div>
         <div class="product-card__body">
-            <h3 class="product-card__name" dir="auto" data-field="name"></h3>
+            {{-- The button's ::after stretches over the whole card, so the card is one click / tab target. --}}
+            <h3 class="product-card__name"><button type="button" class="product-card__link" dir="auto" data-field="name"></button></h3>
             <p class="product-card__meta" data-field="meta"></p>
             <p class="product-card__price" data-field="price"></p>
         </div>

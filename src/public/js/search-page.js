@@ -3,6 +3,7 @@
 
 import { ApiError, searchProducts } from './api.js';
 import { renderProductCard, renderSkeletons } from './product-card.js';
+import { openProductDialog } from './product-dialog.js';
 
 const DEBOUNCE_MS = 450;
 const MIN_LIVE_LENGTH = 2;
@@ -59,7 +60,11 @@ async function runSearch(query, { updateUrl = true } = {}) {
         if (!products.length) return showState('empty');
 
         showState('results');
-        grid.replaceChildren(...products.map((p) => renderProductCard(p)));
+        grid.replaceChildren(...products.map((p) => {
+            const card = renderProductCard(p);
+            card.addEventListener('click', () => openProductDialog(p));
+            return card;
+        }));
         summary.textContent = `${products.length} תוצאות עבור "${meta.query}"`;
     } catch (error) {
         if (current !== controller || current.signal.aborted) return; // a newer search took over

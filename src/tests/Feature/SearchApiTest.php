@@ -77,6 +77,19 @@ class SearchApiTest extends TestCase
         $this->getJson('/api/search?q='.str_repeat('a', 201))->assertUnprocessable();
     }
 
+    public function test_returns_details_for_the_product_popup(): void
+    {
+        $this->getJson('/api/search?q=iphone 16')
+            ->assertOk()
+            ->assertJsonPath('data.0.category', 'סלולר')
+            ->assertJsonPath('data.0.subcategory', 'סמארטפונים')
+            ->assertJsonPath('data.0.description', 'סמארטפון אפל עם מצלמה כפולה ושבב A18')
+            ->assertJsonPath('data.0.attributes', [
+                ['label' => 'נפח', 'value' => '128GB'],
+                ['label' => 'צבע', 'value' => 'שחור'],
+            ]);
+    }
+
     public function test_does_not_expose_internal_columns(): void
     {
         $product = $this->getJson('/api/search?q=iphone')->json('data.0');
