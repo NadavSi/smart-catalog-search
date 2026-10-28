@@ -33,6 +33,7 @@ open http://localhost:8095
 - Reads a CSV (default `data/products.csv`), embeds every product and **upserts by product id**, so re-running is safe.
 - `--prune` also removes products that are no longer in the file.
 - Columns are matched **by header name**, not position (`name`/`title`/`שם`, `price`/`מחיר`, `image`/`image_url`/`תמונה`, …; see `config/catalog.php`). Unknown columns (e.g. `subcategory`, `attributes`) are kept in a JSON `extra` column. Only a name is required; a missing price is stored as null and the card omits it. Rows with no name or an unparseable price are skipped and reported. Prices like `₪ 1,299.90` or `1299 ש"ח` are parsed.
+- The `price` column in `data/products.csv` holds estimated retail prices (ILS), added by hand per product for the demo; they are not real store prices.
 - The delimiter (`,` `;` tab `|`) and a UTF-8 BOM are detected automatically.
 
 ### Tests
