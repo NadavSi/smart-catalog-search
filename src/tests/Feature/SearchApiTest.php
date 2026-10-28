@@ -90,6 +90,15 @@ class SearchApiTest extends TestCase
             ]);
     }
 
+    public function test_sends_security_headers(): void
+    {
+        $response = $this->get('/')->assertOk()
+            ->assertHeader('X-Content-Type-Options', 'nosniff')
+            ->assertHeader('X-Frame-Options', 'DENY');
+
+        $this->assertStringContainsString("script-src 'self'", $response->headers->get('Content-Security-Policy'));
+    }
+
     public function test_does_not_expose_internal_columns(): void
     {
         $product = $this->getJson('/api/search?q=iphone')->json('data.0');
