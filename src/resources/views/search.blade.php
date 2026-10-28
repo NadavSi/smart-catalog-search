@@ -1,5 +1,6 @@
 <x-layouts.app>
     <section class="hero">
+        <span class="hero__badge">חיפוש סמנטי · מבין מה התכוונתם</span>
         <h1 class="hero__title">מה בא לכם למצוא?</h1>
         <p class="hero__subtitle">תארו מה אתם מחפשים, אנחנו נמצא מוצרים מתאימים</p>
 

@@ -96,12 +96,6 @@ clearButton.addEventListener('click', () => {
     input.focus();
 });
 
-document.querySelector('[data-focus-search]')?.addEventListener('click', (event) => {
-    event.preventDefault();
-    input.focus();
-    input.scrollIntoView({ block: 'center', behavior: 'smooth' });
-});
-
 document.querySelector('[data-state-action="error"]')?.addEventListener('click', () => runSearch(input.value));
 
 const initial = new URLSearchParams(location.search).get('q') ?? '';

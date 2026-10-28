@@ -7,17 +7,18 @@
     {{-- Relative URLs: the app is served under a sub-path in production. --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="css/app.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
 </head>
 <body>
     <header class="site-header">
         <div class="site-header__inner">
-            <a href="./" class="logo" dir="ltr" aria-label="htzone, דף הבית">htzone<span class="logo__dot" aria-hidden="true"></span></a>
-            <a href="#search-input" class="site-header__search" data-focus-search>
-                <span>חיפוש מוצרים</span>
-                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <a href="./" class="brand" aria-label="חיפוש חכם, דף הבית">
+                <span class="brand__mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>
+                </span>
+                <span class="brand__name">חיפוש חכם</span>
             </a>
         </div>
     </header>
